@@ -17,33 +17,35 @@
       <p>Rejoignez la communauté des gourmands</p>
     </div>
 
-    <div class="form-group">
-      <label>Prénom &amp; Nom</label>
-      <input type="text" id="reg-name" placeholder="Jean Dupont" autocomplete="name" />
-    </div>
-
-    <div class="form-group">
-      <label>Email</label>
-      <input type="email" id="reg-email" placeholder="vous@exemple.com" autocomplete="email" />
-    </div>
-
-    <div class="form-group">
-      <label>Mot de passe</label>
-      <input type="password" id="reg-pwd" placeholder="8 caractères minimum" autocomplete="new-password" />
-    </div>
-
-    <div class="form-group">
-      <label>Confirmer le mot de passe</label>
-      <input type="password" id="reg-pwd2" placeholder="••••••••" autocomplete="new-password" />
-    </div>
-
-    <p class="form-error" id="reg-error"></p>
-
-    <button class="btn-primary" onclick="doRegister()">Créer mon compte 🎉</button>
-
-    <div class="auth-switch">
-      Déjà un compte ? <a href="login.html">Se connecter</a>
-    </div>
+    <form action="/createUser" method="POST">
+      <div class="form-group">
+        <label>Prénom &amp; Nom</label>
+        <input type="text" id="reg-name" placeholder="Jean Dupont" autocomplete="name" name="name" />
+      </div>
+  
+      <div class="form-group">
+        <label>Email</label>
+        <input type="email" id="reg-email" placeholder="vous@exemple.com" autocomplete="email" name="email" />
+      </div>
+  
+      <div class="form-group">
+        <label>Mot de passe</label>
+        <input type="password" id="reg-pwd" placeholder="8 caractères minimum" autocomplete="new-password" name="pwd" />
+      </div>
+  
+      <div class="form-group">
+        <label>Confirmer le mot de passe</label>
+        <input type="password" id="reg-pwd2" placeholder="••••••••" autocomplete="new-password"/>
+      </div>
+  
+      <p class="form-error" id="reg-error"></p>
+  
+      <button class="btn-primary" onclick="doRegister()">Créer mon compte 🎉</button>
+  
+      <div class="auth-switch">
+        Déjà un compte ?<input type="submit" value="Se connecter" style="display:none;" />
+      </div>
+    </form>
 
   </div>
 </div>
