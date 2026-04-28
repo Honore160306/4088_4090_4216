@@ -2,6 +2,10 @@ DROP DATABASE IF EXISTS 4088_4090_4216;
 CREATE DATABASE 4088_4090_4216 CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 USE 4088_4090_4216;
 
+-- Set session for proper emoji support
+SET NAMES utf8mb4;
+SET FOREIGN_KEY_CHECKS = 0;
+
 -- ======================
 -- TABLE USERS
 -- ======================
@@ -166,3 +170,6 @@ INSERT INTO foods (id_user, name, id_emoji, img, id_category, time, cal, rating,
  'images/tiramisu.jpg',
  (SELECT id_category FROM categories WHERE name = 'Dessert' LIMIT 1),
  20, 380, 5, 'Dessert italien au mascarpone');
+
+-- Reset foreign key checks
+SET FOREIGN_KEY_CHECKS = 1;

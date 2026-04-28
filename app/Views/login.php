@@ -52,25 +52,28 @@
 
     err.classList.remove('visible');
 
-    // Persist user session
-    const user = JSON.parse(localStorage.getItem('fs_user') || 'null');
-    if (user && user.email === email && user.pwd === pwd) {
-      localStorage.setItem('fs_logged', 'true');
-      window.location.href = 'home.html';
-    } else if (!user) {
-      // Demo mode : first login always works
-      localStorage.setItem('fs_user', JSON.stringify({ name: 'Invité', email, pwd }));
-      localStorage.setItem('fs_logged', 'true');
-      window.location.href = 'home.html';
-    } else {
-      err.textContent = 'Email ou mot de passe incorrect.';
+    // Send AJAX request to server
+    fetch('/login', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+      },
+      body: `email=${encodeURIComponent(email)}&pwd=${encodeURIComponent(pwd)}`
+    })
+    .then(response => response.json())
+    .then(data => {
+      if (data.success) {
+        window.location.href = '/home';
+      } else {
+        err.textContent = data.message;
+        err.classList.add('visible');
+      }
+    })
+    .catch(error => {
+      console.error('Error:', error);
+      err.textContent = 'Erreur de connexion. Veuillez réessayer.';
       err.classList.add('visible');
-    }
-  }
-
-  // Already logged in → redirect
-  if (localStorage.getItem('fs_logged') === 'true') {
-    window.location.href = 'home.html';
+    });
   }
 
   // Enter key support

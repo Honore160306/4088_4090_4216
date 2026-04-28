@@ -14,4 +14,23 @@ class RegisterModel extends Model
         'email',
         'pwd'
     ];
+
+    // Hash password before inserting
+    public function createUser($data)
+    {
+        $data['pwd'] = password_hash($data['pwd'], PASSWORD_DEFAULT);
+        return $this->insert($data);
+    }
+
+    // Verify user login
+    public function verifyUser($email, $password)
+    {
+        $user = $this->where('email', $email)->first();
+        
+        if ($user && password_verify($password, $user['pwd'])) {
+            return $user;
+        }
+        
+        return false;
+    }
 }

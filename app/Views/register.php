@@ -17,20 +17,19 @@
       <p>Rejoignez la communauté des gourmands</p>
     </div>
 
-    <form action="/createUser" method="POST">
-      <div class="form-group">
+    <div class="form-group">
         <label>Prénom &amp; Nom</label>
-        <input type="text" id="reg-name" placeholder="Jean Dupont" autocomplete="name" name="name" />
+        <input type="text" id="reg-name" placeholder="Jean Dupont" autocomplete="name" />
       </div>
   
       <div class="form-group">
         <label>Email</label>
-        <input type="email" id="reg-email" placeholder="vous@exemple.com" autocomplete="email" name="email" />
+        <input type="email" id="reg-email" placeholder="vous@exemple.com" autocomplete="email" />
       </div>
   
       <div class="form-group">
         <label>Mot de passe</label>
-        <input type="password" id="reg-pwd" placeholder="8 caractères minimum" autocomplete="new-password" name="pwd" />
+        <input type="password" id="reg-pwd" placeholder="8 caractères minimum" autocomplete="new-password" />
       </div>
   
       <div class="form-group">
@@ -43,9 +42,8 @@
       <button class="btn-primary" onclick="doRegister()">Créer mon compte 🎉</button>
   
       <div class="auth-switch">
-        Déjà un compte ?<input type="submit" value="Se connecter" style="display:none;" />
+        Déjà un compte ? <a href="/login">Se connecter</a>
       </div>
-    </form>
 
   </div>
 </div>
@@ -76,22 +74,31 @@
 
     err.classList.remove('visible');
 
-    localStorage.setItem('fs_user', JSON.stringify({ name, email, pwd }));
-    localStorage.setItem('fs_logged', 'true');
-    // Reset swipe state for new account
-    localStorage.removeItem('fs_liked');
-    localStorage.removeItem('fs_super');
-    localStorage.removeItem('fs_seen');
-    localStorage.removeItem('fs_deck');
-
-    window.location.href = 'home.html';
+    // Send AJAX request to server
+    fetch('/register', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+      },
+      body: `name=${encodeURIComponent(name)}&email=${encodeURIComponent(email)}&pwd=${encodeURIComponent(pwd)}`
+    })
+    .then(response => response.json())
+    .then(data => {
+      if (data.success) {
+        window.location.href = '/login';
+      } else {
+        err.textContent = data.message;
+        err.classList.add('visible');
+      }
+    })
+    .catch(error => {
+      console.error('Error:', error);
+      err.textContent = 'Erreur d\'inscription. Veuillez réessayer.';
+      err.classList.add('visible');
+    });
   }
 
-  // Already logged in → redirect
-  if (localStorage.getItem('fs_logged') === 'true') {
-    window.location.href = 'home.html';
-  }
-
+  // Enter key support
   document.addEventListener('keydown', e => { if (e.key === 'Enter') doRegister(); });
 </script>
 
